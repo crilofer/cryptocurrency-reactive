@@ -1,0 +1,73 @@
+---
+openapi: 3.0.3
+info:
+  title: Crilofer Cryptocurrency APP API
+  description: Crilofer Cryptocurrency APP API
+  contact:
+    name: Cristian Lopez
+    url: https://crilofer.github.io/
+    email: Crilopfer@gmail.com
+  version: 1.0.0
+tags:
+- name: Cryptocurrency
+  description: Cryptocurrency information operations
+paths:
+  /api/cryptocurrency/twitter/feed:
+    get:
+      tags:
+      - Cryptocurrency
+      summary: Cryptocurrency Twitter feed
+      description: Operation to show Cryptocurrency official Twitter account feed
+      parameters:
+      - name: symbol
+        in: query
+        required: true
+        schema:
+          minLength: 1
+          type: string
+          nullable: false
+      responses:
+        "200":
+          description: Login operation successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CryptocurrencyTwitterFeedResponseDto'
+        "404":
+          description: Cryptocurrency not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageDto'
+        "500":
+          description: Server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageDto'
+components:
+  schemas:
+    CryptocurrencyTweetResponseDto:
+      type: object
+      properties:
+        date:
+          type: string
+        username:
+          type: string
+        tweet:
+          type: string
+    CryptocurrencyTwitterFeedResponseDto:
+      type: object
+      properties:
+        feed:
+          type: array
+          items:
+            $ref: '#/components/schemas/CryptocurrencyTweetResponseDto'
+    MessageDto:
+      type: object
+      properties:
+        code:
+          format: int32
+          type: integer
+        error:
+          type: string
